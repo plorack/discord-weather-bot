@@ -4,7 +4,6 @@ import nextcord
 from nextcord import Interaction, SlashOption # Used for UI slashcommands
 from nextcord.ext import commands
 from config import *
-import json
 
 # Specifying a dictionary of Cities
 cities = ['Paris', 'London', 'New York']
@@ -29,7 +28,7 @@ class Weather(commands.Cog):
         self.client = client
     
     @nextcord.slash_command(guild_ids=[1101909369911791637])
-    async def my_weather(self,
+    async def test_weather(self,
                          interaction: Interaction,
                          my_date: str = SlashOption(name="date", choices=next_7_days.keys()),
                          city: str = SlashOption(name="cities", choices=cities)):
@@ -48,9 +47,6 @@ class Weather(commands.Cog):
             ##### 3. Querry API and Returning data
             async with session.get(url, params=params) as response:
                 data = await response.json()  # Parse the JSON response into a Python dictionary
-                with open('weather_data.json', 'w') as f:
-                    json.dump(data, f)
-                    f.close()
                 max_temp = data['forecast']['forecastday'][0]['day']['maxtemp_c']
                 min_temp = data['forecast']['forecastday'][0]['day']['mintemp_c']
                 avg_temp = data['forecast']['forecastday'][0]['day']['avgtemp_c']

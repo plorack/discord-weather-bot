@@ -34,11 +34,18 @@ client = commands.Bot(command_prefix="!", intents=nextcord.Intents.all())
 # ON SUCCESSFULL CONNECTION - THESE ARE COMMANDS PERFORMED BY THE BOT
 @client.event
 async def on_ready():
+    
     #Prints to linux console
     print("Success: Bot is connected to Discord")
+    
     #Displays status on discord channel
     activity = nextcord.Activity(type= 1, name="a dangerous game")
     await client.change_presence(status=nextcord.Status.online, activity=activity)
+    
+    # Fetching the guild ID
+    for guild in client.guilds:
+        guild_id = guild.id
+        print(f"The Guild ID is: {guild_id}")
 
 #5. SAMPLE PREFIX COMMANDS ################################################
 ## 5.1 Connection latency in milli seconds
@@ -50,6 +57,7 @@ async def ping(ctx):
 # Running main event loop
 async def main():
     client.load_extension('cogs.90_weather')
+    client.load_extension('cogs.10_test')
     await client.start(discord_key)
 
 asyncio.run(main())
